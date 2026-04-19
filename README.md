@@ -53,6 +53,7 @@
         <div class="text-red">CORRUPTION: <span id="corruptionDisplay">0</span>%</div>
     </div>
     
+    
     <canvas id="gameCanvas"></canvas>
 
     <div id="startScreen" class="ui-layer">
