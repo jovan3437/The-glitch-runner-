@@ -276,4 +276,7 @@
 </body>
 </html>
 # The-glitch-runner-
-#game #freegame #runnergame #webgame #free #poki 
+#game #freegame #runnergame #webgame #free #poki    
+on desktop site for Play 
+tap only on game area to jump 
+
