@@ -14,10 +14,10 @@
         
         /* ADJUSTED: Pushed down 60px to leave room for AdMob Banner at the top */
         #game-container { 
-            position: relative; 
-            width: 100%; 
-            height: calc(100% - 60px); 
-            margin-top: 60px; 
+            position: relative;
+        flex: 1; /* This tells the game to take up all space under the ad */
+        width: 100%;
+        display: block; 
         }
         
         canvas { display: block; width: 100%; height: 100%; background: #000; }
