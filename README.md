@@ -5,44 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Glitch-Runner: Virus Edition</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #050505; color: #0f0;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden; touch-action: none; 
-        }
-        
-        /* ADJUSTED: Pushed down 60px to leave room for AdMob Banner at the top */
-        #game-container { 
-            position: relative;
-        flex: 1; /* This tells the game to take up all space under the ad */
+    <style>
+    /* Prevent the bounce/scroll effect on mobile */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
         width: 100%;
-        display: block; 
-        }
-        
-        canvas { display: block; width: 100%; height: 100%; background: #000; }
-        
-        .ui-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; background: rgba(0, 0, 0, 0.9);
-            text-align: center; z-index: 10;
-        }
+        height: 100%;
+        overflow: hidden; /* Stops the screen from shaking */
+        background-color: #000;
+        display: flex;
+        flex-direction: column;
+    }
 
-        button {
-            background: #000; color: #0f0; border: 2px solid #0f0;
-            padding: 15px 30px; margin: 10px; cursor: pointer;
-            font-family: inherit; font-size: 1.2rem; border-radius: 5px;
-            box-shadow: 0 0 10px #0f0;
-        }
+    #top-ad-banner {
+        width: 100%;
+        height: 60px; /* Keep this small and fixed */
+        background: #111;
+        border-bottom: 1px solid #0f0;
+        flex-shrink: 0; /* Prevents the ad from getting squashed */
+    }
 
-        #hud {
-            position: absolute; top: 15px; left: 15px;
-            pointer-events: none; font-size: 1.1rem; z-index: 5;
-        }
-        .text-red { color: #ff3333; }
-        #upgradeScreen, #gameOverScreen { display: none; }
-    </style>
+    #game-container {
+        position: relative;
+        flex-grow: 1; /* This forces the game to take ALL remaining space */
+        width: 100%;
+        overflow: hidden;
+    }
+
+    canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Keep the HUD floating in the top left corner of the game area */
+    #hud {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 10;
+        pointer-events: none;
+        font-family: 'Courier New', monospace;
+        color: #0f0;
+        text-shadow: 2px 2px #000;
+    }
+</style>
 </head>
 <body>
 
@@ -101,12 +113,26 @@
     const ctx = canvas.getContext('2d');
 
     function resize() {
-        const container = document.getElementById('game-container');
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
+    const container = document.getElementById('game-container');
+    
+    // 1. Get the actual pixel size of the container on the screen
+    const displayWidth = container.clientWidth;
+    const displayHeight = container.clientHeight;
+
+    // 2. Set the canvas internal drawing resolution to match
+    // This is the most important part!
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
     }
-    window.addEventListener('resize', resize);
-    resize();
+    
+    console.log("Resized to: " + canvas.width + "x" + canvas.height);
+}
+
+// Trigger resize on load and whenever the window changes
+window.addEventListener('resize', resize);
+// Call it immediately
+resize();
 
     // Game Variables
     let hasStarted = false, isPaused = false, isGameOver = false;
